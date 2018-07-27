@@ -7,17 +7,48 @@ public class Globals : MonoBehaviour {
 
     public static Globals instance;
 
+    [SerializeField]
+    Dot dotPrefab;
+    public static Dot DotPrefab
+    {
+        get
+        {
+            return instance.dotPrefab;
+        }
+    }
 
     [SerializeField]
-    GameObject dotPrefab;
-    [SerializeField]
-    GameObject chainPrefab;
-    [SerializeField]
-    GameObject gridBoxPrefab; // TODO: Instead of GameObject, should it be GridBox gridBoxPrefab?
+    Chain chainPrefab;
+    public static Chain ChainPrefab
+    {
+        get
+        {
+            return instance.chainPrefab;
+        }
+    }
 
+    [SerializeField]
+    GridBox gridBoxPrefab;
+    public static GridBox GridBoxPrefab
+    {
+        get
+        {
+            return instance.gridBoxPrefab;
+        }
+    }
+    
+    // How far Dot is away GridBox 
     [SerializeField]
     float gridBoxZOffset = 1.0f;
+    public static float GridBoxZOffset
+    {
+        get
+        {
+            return instance.gridBoxZOffset;
+        }
+    }
 
+    // Speed at which dots fall
     [SerializeField]
     float fallingSpeed = 0.1f;
     public static float FallingSpeed
@@ -29,7 +60,7 @@ public class Globals : MonoBehaviour {
     }
 
     [SerializeField]
-    // Where (0,0) will be spawned
+    // Where the grid's coordinate (0,0) will be spawned
     Vector3 gridOrigin = Vector3.zero;
     public static Vector3 GridOrigin
     {
@@ -40,48 +71,9 @@ public class Globals : MonoBehaviour {
     }
 
 
+    // The different colors that will be used when generated dots
     [SerializeField]
     DotColor[] colors;
-
-    [SerializeField]
-    int gridWidth;
-
-    [SerializeField]
-    int gridHeight;
-
-    [SerializeField]
-    Grid grid;
-    public static Grid Grid
-    {
-        get {
-            return instance.grid;
-        }
-    }
-
-    public static GameObject DotPrefab
-    {
-        get
-        {
-            return instance.dotPrefab;
-        }
-    }
-
-    public static GameObject ChainPrefab
-    {
-        get
-        {
-            return instance.chainPrefab;
-        }
-    }
-
-    public static GameObject GridBoxPrefab
-    {
-        get
-        {
-            return instance.gridBoxPrefab;
-        }
-    }
-
     public static DotColor[] Colors
     {
         get
@@ -90,14 +82,8 @@ public class Globals : MonoBehaviour {
         }
     }
 
-    public static float GridBoxZOffset
-    {
-        get
-        {
-            return instance.gridBoxZOffset;
-        }
-    }
-
+    [SerializeField]
+    int gridWidth;
     public static int GridWidth
     {
         get
@@ -106,11 +92,22 @@ public class Globals : MonoBehaviour {
         }
     }
 
+    [SerializeField]
+    int gridHeight;
     public static int GridHeight
     {
         get
         {
             return instance.gridHeight;
+        }
+    }
+
+    [SerializeField]
+    GridController grid;
+    public static GridController Grid
+    {
+        get {
+            return instance.grid;
         }
     }
 
@@ -120,7 +117,6 @@ public class Globals : MonoBehaviour {
         int randomIndex = Random.Range(0, colorCount);
         return Colors[randomIndex];
     }
-
 
     void Awake()
     {

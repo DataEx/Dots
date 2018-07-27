@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: rename Player class
+//TODO: fix data structure use. Want O(1) insertion and O(1) search
+//TODO: use object pool
 public class Player : MonoBehaviour {
 
     // Both are the same collection of dots currently chained together
@@ -68,10 +71,9 @@ public class Player : MonoBehaviour {
                 }
                 Globals.Grid.RepopulateGrid();
             }
-            dotsInteracting.Clear();
-            CleanupChains();
 
-            // TODO: put all this in a cleanup function
+            CleanupMove();
+
             // TODO: Running every frame, see if can use delegate
         }
     }
@@ -98,22 +100,20 @@ public class Player : MonoBehaviour {
             // If already in set and not the PreviousChainHead, that means we've created a square-esque shape
             else if (dotsInteracting.Contains(hitDot))
             {
-                dotsInteracting.Clear();
-                CleanupChains();
+                CleanupMove();
 
                 List<Dot> dotsToDelete = Globals.Grid.GetAllDotsOfColor(MatchingColor);
                 foreach (Dot dot in dotsToDelete)
                 {
                     dot.DestroyDot();
                 }
-                // repopulate grid
                 Globals.Grid.RepopulateGrid();
             }
 
             else
             {
                 // AddChain
-                Chain newChain = Instantiate(Globals.ChainPrefab).GetComponent<Chain>();
+                Chain newChain = Instantiate(Globals.ChainPrefab);
                 newChain.name = Time.time.ToString();
                 newChain.Initialize(LastDotHit);
                 newChain.UpdateTransform(hitDot.transform.position);
@@ -143,13 +143,14 @@ public class Player : MonoBehaviour {
     {
         if (cursorChain == null)
         {
-            cursorChain = Instantiate(Globals.ChainPrefab).GetComponent<Chain>();
+            cursorChain = Instantiate(Globals.ChainPrefab);
         }
         cursorChain.Initialize(hitDot);
     }
 
-    private void CleanupChains()
+    private void CleanupMove()
     {
+        dotsInteracting.Clear();
         chainedDots.Clear();
         if (cursorChain != null)
         {

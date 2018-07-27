@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid : MonoBehaviour {
+public class GridController : MonoBehaviour {
 
     GridBox[,] grid;
 
@@ -13,7 +13,6 @@ public class Grid : MonoBehaviour {
             return Globals.GridBoxPrefab.transform.localScale.z;
         }
     }
-
 
     private void Start()
     {
@@ -35,7 +34,7 @@ public class Grid : MonoBehaviour {
             print("No valid GridBox Prefab");
             return null;
         }
-        GridBox gridBox = Instantiate(Globals.GridBoxPrefab).GetComponent<GridBox>();
+        GridBox gridBox = Instantiate(Globals.GridBoxPrefab);
         gridBox.Initialize(c, GetSpawnLocation(c));
         gridBox.transform.parent = this.transform;
         grid[c.X, c.Y] = gridBox;
@@ -65,7 +64,7 @@ public class Grid : MonoBehaviour {
             {
                 GridBox gridBox = grid[i, j];
                 // Destroy old gridboxes
-                if (gridBox != null && gridBox.gridDot == null)
+                if (gridBox != null && gridBox.GridDot == null)
                 {
                     grid[i, j] = null;
                     Destroy(gridBox.gameObject);
@@ -83,7 +82,7 @@ public class Grid : MonoBehaviour {
             {
                 GridBox generatedGridBox = GenerateGridBox(new Coordinate(i, j));
                 // Position new gridboxes above the screen
-                generatedGridBox.transform.position = Grid.GetSpawnLocation(new Coordinate(i, j - dotsRemovedInColumn));
+                generatedGridBox.transform.position = GridController.GetSpawnLocation(new Coordinate(i, j - dotsRemovedInColumn));
                 generatedGridBox.FallDownFromAbove();
             }
 
@@ -96,7 +95,7 @@ public class Grid : MonoBehaviour {
         for (int j = coordinate.Y - 1; j >= 0; j--)
         {
             GridBox aboveGridBox = grid[coordinate.X, j];
-            if (aboveGridBox  != null && aboveGridBox.gridDot != null && !aboveGridBox.isUpdatingCoordinate)
+            if (aboveGridBox != null && aboveGridBox.GridDot != null && !aboveGridBox.isUpdatingCoordinate)
             {
                 return aboveGridBox;
             }
@@ -125,9 +124,9 @@ public class Grid : MonoBehaviour {
             for (int j = 0; j < Globals.GridHeight; j++)
             {
                 GridBox gridBox = grid[i, j];
-                if (gridBox != null && gridBox.gridDot != null && gridBox.gridDot.Color == color)
+                if (gridBox != null && gridBox.GridDot != null && gridBox.GridDot.Color == color)
                 {
-                    dotsOfColor.Add(grid[i, j].gridDot);
+                    dotsOfColor.Add(grid[i, j].GridDot);
                 }
             }
         }

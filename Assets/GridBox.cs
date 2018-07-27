@@ -7,7 +7,6 @@ public class GridBox : MonoBehaviour {
 
     [SerializeField]
     Coordinate coordinate;
-
     public Coordinate Coordinate
     {
         get
@@ -21,11 +20,19 @@ public class GridBox : MonoBehaviour {
         }
     }
 
+    private Dot gridDot;
+    public Dot GridDot
+    {
+        get
+        {
+            return gridDot;
+        }
+    }
+
+    // Whether is currently falling
     public bool isUpdatingCoordinate = false;
 
 
-    // TODO: shouldn't be public
-    public Dot gridDot;
 
     public void Initialize(Coordinate c, Vector3 spawnLocation)
     {
@@ -41,37 +48,32 @@ public class GridBox : MonoBehaviour {
 
     public void CreateDot()
     {
-        gridDot = Instantiate(Globals.DotPrefab).GetComponent<Dot>();
+        gridDot = Instantiate(Globals.DotPrefab);
         gridDot.transform.parent = this.transform;
         gridDot.transform.localPosition = new Vector3(0, 0, Globals.GridBoxZOffset);
         gridDot.Color = Globals.GetRandomColor();
         gridDot.GridBox = this;
     }
 
-    private void OnDestroy()
-    {
-        print("Dest: " + coordinate.X + ", " + coordinate.Y);
-
-
-    }
-
+    // Used when starting location is above the grid
     public void FallDownFromAbove()
     {
         isUpdatingCoordinate = true;
-        Vector3 newLocation = Grid.GetSpawnLocation(coordinate);
+        Vector3 newLocation = GridController.GetSpawnLocation(coordinate);
         StartCoroutine(FallDownCoroutine(newLocation));
     }
 
+    // Used when starting location is already in the grid
     public void FallDown(int numberOfSpacesToFall)
     {
         isUpdatingCoordinate = true;
         Coordinate = new Coordinate(coordinate.X, coordinate.Y + numberOfSpacesToFall);
-        print(string.Format("new Coord {0},{1}", Coordinate.X, Coordinate.Y));
-
-        Vector3 newLocation = Grid.GetSpawnLocation(coordinate);
+        Vector3 newLocation = GridController.GetSpawnLocation(coordinate);
         StartCoroutine(FallDownCoroutine(newLocation));
     }
 
+
+    // "Animation" for falling dots
     IEnumerator FallDownCoroutine(Vector3 destination)
     {
         yield return null;

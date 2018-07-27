@@ -6,10 +6,7 @@ using UnityEngine;
 public class Coordinate {
 
     [SerializeField]
-    int x; // TODO: all int to int32?
-    [SerializeField]
-    int y;
-
+    int x;
     public int X
     {
         get
@@ -18,6 +15,8 @@ public class Coordinate {
         }
     }
 
+    [SerializeField]
+    int y;
     public int Y
     {
         get

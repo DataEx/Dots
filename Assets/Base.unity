@@ -533,20 +533,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7092bc759b79d744dbe1e3b3076438b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dotPrefab: {fileID: 1868599861757414, guid: 9dd6bba0d83e4184bb8cbbd675160614, type: 2}
-  chainPrefab: {fileID: 1461332316556256, guid: b4e9a4861daef5f48bf336798b4f9dc6,
+  dotPrefab: {fileID: 114747301958236014, guid: 9dd6bba0d83e4184bb8cbbd675160614,
     type: 2}
-  gridBoxPrefab: {fileID: 1274799370435684, guid: 70f3d4d4946e205439d6b088d093edcd,
+  chainPrefab: {fileID: 114579160800875274, guid: b4e9a4861daef5f48bf336798b4f9dc6,
+    type: 2}
+  gridBoxPrefab: {fileID: 114970461003174188, guid: 70f3d4d4946e205439d6b088d093edcd,
     type: 2}
   gridBoxZOffset: 1
   fallingSpeed: 10
-  gridOrigin: {x: -6, y: 5, z: 0}
+  gridOrigin: {x: -5, y: 5, z: 0}
   colors:
   - materialColor: {fileID: 2100000, guid: 948e042fc46101c4889a4eb4a5b26861, type: 2}
   - materialColor: {fileID: 2100000, guid: 6c79024eead24b0438b78fa34586fa80, type: 2}
   - materialColor: {fileID: 2100000, guid: 3210298f25df3c84ca765c974397e1fe, type: 2}
   - materialColor: {fileID: 2100000, guid: 10d799b054aa5f74ab56a47fc66d4aec, type: 2}
-  gridWidth: 7
+  gridWidth: 6
   gridHeight: 5
   grid: {fileID: 1880509786}
 --- !u!1001 &1439439493

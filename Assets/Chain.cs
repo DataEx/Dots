@@ -2,14 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer))]
 public class Chain : MonoBehaviour {
 
+    // Dot where the chain is coming from
     Dot originDot = null;
+
+    private Renderer rendererComponent;
+
+    private void Awake()
+    {
+        rendererComponent = this.GetComponent<Renderer>();
+    }
+
 
     public void Initialize(Dot dot)
     {
         originDot = dot;
-        this.GetComponent<Renderer>().material = dot.Color.MaterialColor;
+
+        if (dot != null)
+            rendererComponent.material = dot.Color.MaterialColor;
+        else
+            rendererComponent.material = null;
     }
     
     // Connects a dot with either another dot or the cursor's location
@@ -17,6 +31,7 @@ public class Chain : MonoBehaviour {
     {
         if (originDot == null)
             return;
+
         endPoint.z = originDot.transform.position.z;
 
         // Position self between both objects

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer))]
 public class Dot : MonoBehaviour {
-
 
     GridBox gridBox;
     public GridBox GridBox
@@ -18,11 +18,12 @@ public class Dot : MonoBehaviour {
         }
     }
 
-
     public Coordinate Coordinate
     {
         get
         {
+            if (gridBox == null)
+                return null;
             return gridBox.Coordinate;
         }
     }
@@ -36,7 +37,10 @@ public class Dot : MonoBehaviour {
         }
         set
         {
-            this.GetComponent<Renderer>().material = value.MaterialColor;
+            if (value == null)
+                rendererComponent.material = null;
+            else
+                rendererComponent.material = value.MaterialColor;
             color = value;
         }
     }
@@ -56,12 +60,18 @@ public class Dot : MonoBehaviour {
         }
     }
 
+    private Renderer rendererComponent;
+
+    private void Awake()
+    {
+        rendererComponent = this.GetComponent<Renderer>();
+    }
+
 
     public void DestroyDot()
     {
         if (Chain != null)
             Chain.DestroyChain();
-        if(this != null)
-            Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 }
