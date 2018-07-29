@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Globals : MonoBehaviour {
 
-
     public static Globals instance;
 
     [SerializeField]
-    Dot dotPrefab;
+    private Dot dotPrefab;
     public static Dot DotPrefab
     {
         get
@@ -18,7 +17,7 @@ public class Globals : MonoBehaviour {
     }
 
     [SerializeField]
-    Chain chainPrefab;
+    private Chain chainPrefab;
     public static Chain ChainPrefab
     {
         get
@@ -28,7 +27,7 @@ public class Globals : MonoBehaviour {
     }
 
     [SerializeField]
-    GridBox gridBoxPrefab;
+    private GridBox gridBoxPrefab;
     public static GridBox GridBoxPrefab
     {
         get
@@ -36,21 +35,9 @@ public class Globals : MonoBehaviour {
             return instance.gridBoxPrefab;
         }
     }
-    
-    // How far Dot is away GridBox 
-    [SerializeField]
-    float gridBoxZOffset = 1.0f;
-    public static float GridBoxZOffset
-    {
-        get
-        {
-            return instance.gridBoxZOffset;
-        }
-    }
 
-    // Speed at which dots fall
-    [SerializeField]
-    float fallingSpeed = 0.1f;
+    [SerializeField] [Tooltip("Speed at which dots fall. Must be greater than 0.")]
+    private float fallingSpeed = 0.1f;
     public static float FallingSpeed
     {
         get
@@ -60,8 +47,17 @@ public class Globals : MonoBehaviour {
     }
 
     [SerializeField]
-    // Where the grid's coordinate (0,0) will be spawned
-    Vector3 gridOrigin = Vector3.zero;
+    private GridController grid;
+    public static GridController Grid
+    {
+        get
+        {
+            return instance.grid;
+        }
+    }
+
+    [SerializeField] [Tooltip("Where the Grid's coordinate (0,0) will be spawned.")]
+    private Vector3 gridOrigin = Vector3.zero;
     public static Vector3 GridOrigin
     {
         get
@@ -70,20 +66,8 @@ public class Globals : MonoBehaviour {
         }
     }
 
-
-    // The different colors that will be used when generated dots
     [SerializeField]
-    DotColor[] colors;
-    public static DotColor[] Colors
-    {
-        get
-        {
-            return instance.colors;
-        }
-    }
-
-    [SerializeField]
-    int gridWidth;
+    private int gridWidth;
     public static int GridWidth
     {
         get
@@ -93,7 +77,7 @@ public class Globals : MonoBehaviour {
     }
 
     [SerializeField]
-    int gridHeight;
+    private int gridHeight;
     public static int GridHeight
     {
         get
@@ -102,12 +86,13 @@ public class Globals : MonoBehaviour {
         }
     }
 
-    [SerializeField]
-    GridController grid;
-    public static GridController Grid
+    [SerializeField] [Tooltip("The different colors that will be used when generated dots")]
+    private DotColor[] colors;
+    public static DotColor[] Colors
     {
-        get {
-            return instance.grid;
+        get
+        {
+            return instance.colors;
         }
     }
 
@@ -122,4 +107,7 @@ public class Globals : MonoBehaviour {
     {
         instance = this;
     }
+
+
+
 }

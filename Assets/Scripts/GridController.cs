@@ -7,13 +7,6 @@ public class GridController : MonoBehaviour {
 
     private GridBox[,] grid;
 
-    public static float GridBoxScale
-    {
-        get {
-            return Globals.GridBoxPrefab.transform.localScale.z;
-        }
-    }
-
     private void Start()
     {
         grid = new GridBox[Globals.GridWidth, Globals.GridHeight];
@@ -43,6 +36,14 @@ public class GridController : MonoBehaviour {
     public static Vector3 GetSpawnLocation(Coordinate c)
     {
         return new Vector3(c.X, -c.Y, 0) * (GridBoxScale * 10) + Globals.GridOrigin;
+    }
+
+    public static float GridBoxScale
+    {
+        get
+        {
+            return Globals.GridBoxPrefab.transform.localScale.z;
+        }
     }
 
     public void RepopulateGrid()
@@ -88,7 +89,7 @@ public class GridController : MonoBehaviour {
         }
     }
 
-    internal void RemoveDots(List<Dot> dotList)
+    public void RemoveDots(List<Dot> dotList)
     {
         foreach (Dot dot in dotList)
         {
@@ -111,7 +112,7 @@ public class GridController : MonoBehaviour {
         return null;
     }
 
-    public void UpdateGrid(GridBox gridBox, Coordinate c)
+    public void UpdateCoordinate(GridBox gridBox, Coordinate c)
     {
         try
         {

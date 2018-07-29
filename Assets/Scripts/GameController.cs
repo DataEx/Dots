@@ -124,11 +124,13 @@ public class GameController : MonoBehaviour {
             // Add Chain
             else
             {
-                Chain newChain = Instantiate(Globals.ChainPrefab);
-                newChain.Initialize(LastDotHit);
-                newChain.UpdateTransform(hitDot.transform.position);
-
-                LastDotHit.Chain = newChain;
+                Chain newChain = CreateChain();
+                if (newChain != null)
+                {
+                    newChain.Initialize(LastDotHit);
+                    newChain.UpdateTransform(hitDot.transform.position);
+                    LastDotHit.Chain = newChain;
+                }
 
                 dotsInteracting.Add(hitDot);
             }
@@ -139,11 +141,24 @@ public class GameController : MonoBehaviour {
     private void DrawCursorChain(Dot hitDot)
     {
         if (cursorChain == null)
-        {
-            cursorChain = Instantiate(Globals.ChainPrefab);
-        }
-        cursorChain.Initialize(hitDot);
+            cursorChain = CreateChain();
+
+        if (cursorChain != null)
+            cursorChain.Initialize(hitDot);
     }
+
+
+    Chain CreateChain()
+    {
+        if (Globals.ChainPrefab != null)
+            return Instantiate(Globals.ChainPrefab);
+        else
+        {
+            Debug.LogError("No valid Chain Prefab");
+            return null;
+        }
+    }
+
 
     // Reseting state, to be run after a move has been made
     private void Cleanup()

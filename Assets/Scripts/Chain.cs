@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class Chain : MonoBehaviour {
 
-    // Dot where the chain is coming from
+    // Dot where the chain is originating from
     Dot originDot = null;
 
     private Renderer rendererComponent;
@@ -14,7 +14,6 @@ public class Chain : MonoBehaviour {
     {
         rendererComponent = this.GetComponent<Renderer>();
     }
-
 
     public void Initialize(Dot dot)
     {

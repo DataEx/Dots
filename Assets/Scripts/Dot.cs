@@ -3,7 +3,7 @@
 [RequireComponent(typeof(Renderer))]
 public class Dot : MonoBehaviour {
 
-    GridBox gridBox;
+    private GridBox gridBox;
     public GridBox GridBox
     {
         get

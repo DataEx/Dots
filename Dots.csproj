@@ -84,14 +84,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Chain.cs" />
-    <Compile Include="Assets\Coordinate.cs" />
-    <Compile Include="Assets\Dot.cs" />
-    <Compile Include="Assets\DotColor.cs" />
-    <Compile Include="Assets\GameController.cs" />
-    <Compile Include="Assets\Globals.cs" />
-    <Compile Include="Assets\GridBox.cs" />
-    <Compile Include="Assets\GridController.cs" />
+    <Compile Include="Assets\Scripts\Chain.cs" />
+    <Compile Include="Assets\Scripts\Coordinate.cs" />
+    <Compile Include="Assets\Scripts\Dot.cs" />
+    <Compile Include="Assets\Scripts\DotColor.cs" />
+    <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\Globals.cs" />
+    <Compile Include="Assets\Scripts\GridBox.cs" />
+    <Compile Include="Assets\Scripts\GridController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

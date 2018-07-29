@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class GridBox : MonoBehaviour {
@@ -16,7 +14,7 @@ public class GridBox : MonoBehaviour {
         set
         {
             coordinate = value;
-            Globals.Grid.UpdateGrid(this, coordinate);
+            Globals.Grid.UpdateCoordinate(this, coordinate);
         }
     }
 
@@ -39,26 +37,31 @@ public class GridBox : MonoBehaviour {
         }
     }
 
+    void Awake()
+    {
+        CreateDot();
+    }
+
+    public void CreateDot()
+    {
+        if (Globals.DotPrefab == null)
+        {
+            Debug.LogError("No valid Dot Prefab");
+            return;
+        }
+
+        gridDot = Instantiate(Globals.DotPrefab);
+        gridDot.transform.parent = this.transform;
+        gridDot.transform.localPosition = Vector3.zero;
+        gridDot.Color = Globals.GetRandomColor();
+        gridDot.GridBox = this;
+    }
 
     public void Initialize(Coordinate c, Vector3 spawnLocation)
     {
         coordinate = c;
         this.transform.position = spawnLocation;
         this.name = string.Format("Gridbox: ({0}, {1})", c.X, c.Y);
-    }
-
-	// Use this for initialization
-	void Awake () {
-        CreateDot();
-    }
-
-    public void CreateDot()
-    {
-        gridDot = Instantiate(Globals.DotPrefab);
-        gridDot.transform.parent = this.transform;
-        gridDot.transform.localPosition = new Vector3(0, 0, Globals.GridBoxZOffset);
-        gridDot.Color = Globals.GetRandomColor();
-        gridDot.GridBox = this;
     }
 
     // Used when starting location is above the grid
