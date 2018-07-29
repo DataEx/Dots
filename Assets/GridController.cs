@@ -89,6 +89,14 @@ public class GridController : MonoBehaviour {
         }
     }
 
+    internal void RemoveDots(List<Dot> dotList)
+    {
+        foreach (Dot dot in dotList)
+        {
+            dot.DestroyDot();
+        }
+    }
+
     // Find next valid dot above the given location
     private GridBox GetNextActiveDotAbove(Coordinate coordinate)
     {

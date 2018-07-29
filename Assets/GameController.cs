@@ -3,51 +3,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: rename Player class
-//TODO: fix data structure use. Want O(1) insertion and O(1) search
-//TODO: use object pool
-public class Player : MonoBehaviour {
+public class GameController : MonoBehaviour {
 
-    // Both are the same collection of dots currently chained together
-    HashSet<Dot> dotsInteracting = new HashSet<Dot>();
-    Stack<Dot> chainedDots = new Stack<Dot>();
+    // Collection of dots currently chained together
+    List<Dot> dotsInteracting = new List<Dot>();
 
     Dot LastDotHit
     {
         get {
-            if (chainedDots == null || chainedDots.Count == 0)
+            if (dotsInteracting == null || dotsInteracting.Count == 0)
                 return null;
             else
-                return chainedDots.Peek();
+                return dotsInteracting[LastIndexOfDotsInteracting];
         }
     }
 
-    // See if this can be more optimized
+    int LastIndexOfDotsInteracting
+    {
+        get {
+            return dotsInteracting.Count - 1;
+        }
+    }
+
+    // The Dot that owns the most recently added Chain
     Dot PreviousChainHead
     {
         get
         {
-            if (chainedDots == null || chainedDots.Count <= 1)
+            if (dotsInteracting == null || dotsInteracting.Count <= 1)
                 return null;
             else
             {
-                Dot topDot = chainedDots.Pop();
-                Dot chainHead = chainedDots.Peek();
-                chainedDots.Push(topDot);
-                return chainHead;
+                // Want second to last most recently added
+                return dotsInteracting[LastIndexOfDotsInteracting - 1];
             }
         }
     }
 
     DotColor MatchingColor;
+
+    // Chain drawn from last dot to cursor 
     Chain cursorChain = null;
 
-    void Update () {
+    void Update ()
+    {
 
-        if (Input.GetMouseButton(0))
+        if (IsTouchingScreen())
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = GetRayFromMousePosition();
+            // If touching dot, interact with it
             if (Physics.Raycast(ray, out hit))
             {
                 Dot hitDot = hit.collider.GetComponent<Dot>();
@@ -56,34 +61,40 @@ public class Player : MonoBehaviour {
                     TryAddDot(hitDot);
                 }
             }
-            if(cursorChain != null)
+            if (cursorChain != null)
                 cursorChain.UpdateTransform(ray.origin);
 
         }
-        // Let go of mouse
-        else {
+        // No longer interacting with screen
+        else
+        {
             if (dotsInteracting.Count >= 2)
             {
-                // Remove dots from grid
-                foreach (Dot dot in dotsInteracting)
-                {
-                    dot.DestroyDot();
-                }
+                Globals.Grid.RemoveDots(dotsInteracting);
                 Globals.Grid.RepopulateGrid();
             }
-
-            CleanupMove();
-
-            // TODO: Running every frame, see if can use delegate
+            Cleanup();
         }
     }
+
+
+    // Isolate input
+    private bool IsTouchingScreen()
+    {
+        return Input.GetMouseButton(0);
+    }
+    private Ray GetRayFromMousePosition()
+    {
+        return Camera.main.ScreenPointToRay(Input.mousePosition);
+    }
+
 
     void TryAddDot(Dot hitDot)
     {
         // If set is empty, add it
         if (dotsInteracting.Count == 0)
         {
-            AddDotToList(hitDot);
+            dotsInteracting.Add(hitDot);
             MatchingColor = hitDot.Color;
             DrawcursorChain(hitDot);
         }
@@ -100,44 +111,33 @@ public class Player : MonoBehaviour {
             // If already in set and not the PreviousChainHead, that means we've created a square-esque shape
             else if (dotsInteracting.Contains(hitDot))
             {
-                CleanupMove();
-
+                Cleanup();
                 List<Dot> dotsToDelete = Globals.Grid.GetAllDotsOfColor(MatchingColor);
-                foreach (Dot dot in dotsToDelete)
-                {
-                    dot.DestroyDot();
-                }
+                Globals.Grid.RemoveDots(dotsToDelete);
                 Globals.Grid.RepopulateGrid();
             }
 
             else
             {
-                // AddChain
+                // Add Chain
                 Chain newChain = Instantiate(Globals.ChainPrefab);
-                newChain.name = Time.time.ToString();
                 newChain.Initialize(LastDotHit);
                 newChain.UpdateTransform(hitDot.transform.position);
+
                 LastDotHit.Chain = newChain;
 
                 dotsInteracting.Add(hitDot);
-                chainedDots.Push(hitDot);
             }
-
             DrawcursorChain(hitDot);
         }
     }
 
     private void RemoveLastDot()
     {
-        Dot prevDot = chainedDots.Pop();
-        dotsInteracting.Remove(prevDot);
+        Dot prevDot = dotsInteracting[LastIndexOfDotsInteracting];
+        dotsInteracting.RemoveAt(LastIndexOfDotsInteracting);
     }
 
-    private void AddDotToList(Dot hitDot)
-    {
-        dotsInteracting.Add(hitDot);
-        chainedDots.Push(hitDot);
-    }
 
     private void DrawcursorChain(Dot hitDot)
     {
@@ -148,16 +148,15 @@ public class Player : MonoBehaviour {
         cursorChain.Initialize(hitDot);
     }
 
-    private void CleanupMove()
+    // Reseting state, to be run after a move has been made
+    private void Cleanup()
     {
         dotsInteracting.Clear();
-        chainedDots.Clear();
         if (cursorChain != null)
         {
             cursorChain.DestroyChain();
         }
     }
-
 
 }
 

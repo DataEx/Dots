@@ -82,10 +82,12 @@
     <Compile Include="Assets\Coordinate.cs" />
     <Compile Include="Assets\Dot.cs" />
     <Compile Include="Assets\DotColor.cs" />
+    <Compile Include="Assets\GameController.cs" />
     <Compile Include="Assets\Globals.cs" />
     <Compile Include="Assets\GridBox.cs" />
     <Compile Include="Assets\GridController.cs" />
-    <Compile Include="Assets\Player.cs" />
+    <Compile Include="Assets\InputController.cs" />
+    <Compile Include="Assets\PlayerInput.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
