@@ -6,7 +6,7 @@ using UnityEngine;
 public class GridBox : MonoBehaviour {
 
     [SerializeField]
-    Coordinate coordinate;
+    private Coordinate coordinate;
     public Coordinate Coordinate
     {
         get
@@ -30,8 +30,14 @@ public class GridBox : MonoBehaviour {
     }
 
     // Whether is currently falling
-    public bool isUpdatingCoordinate = false;
-
+    private bool isUpdatingCoordinate = false;
+    public bool IsUpdatingCoordinate
+    {
+        get
+        {
+            return isUpdatingCoordinate;
+        }
+    }
 
 
     public void Initialize(Coordinate c, Vector3 spawnLocation)
@@ -42,7 +48,7 @@ public class GridBox : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         CreateDot();
     }
 

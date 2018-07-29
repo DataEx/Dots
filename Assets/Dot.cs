@@ -45,7 +45,7 @@ public class Dot : MonoBehaviour {
 
 
     [SerializeField]
-    Chain chain;
+    private Chain chain;
     public Chain Chain
     {
         get
@@ -64,7 +64,6 @@ public class Dot : MonoBehaviour {
     {
         rendererComponent = this.GetComponent<Renderer>();
     }
-
 
     public void DestroyDot()
     {

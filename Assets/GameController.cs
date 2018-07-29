@@ -90,15 +90,18 @@ public class GameController : MonoBehaviour {
         return Camera.main.ScreenPointToRay(Input.mousePosition);
     }
 
-
     void TryAddDot(Dot hitDot)
     {
+        // Don't interact with any dot that is currently moving
+        if (hitDot.GridBox.IsUpdatingCoordinate)
+            return;
+
         // If set is empty, add it
         if (dotsInteracting.Count == 0)
         {
             dotsInteracting.Add(hitDot);
             MatchingColor = hitDot.Color;
-            DrawcursorChain(hitDot);
+            DrawCursorChain(hitDot);
         }
         else if (hitDot.Color == MatchingColor && hitDot.Coordinate.IsNeighbor(LastDotHit.Coordinate))
         {
@@ -106,7 +109,7 @@ public class GameController : MonoBehaviour {
             if (hitDot == PreviousChainHead)
             {
                 Chain chainToDelete = PreviousChainHead.Chain;
-                RemoveLastDot();
+                dotsInteracting.RemoveAt(LastIndexOfDotsInteracting);
                 chainToDelete.DestroyChain();
             }
 
@@ -129,18 +132,11 @@ public class GameController : MonoBehaviour {
 
                 dotsInteracting.Add(hitDot);
             }
-            DrawcursorChain(hitDot);
+            DrawCursorChain(hitDot);
         }
     }
 
-    private void RemoveLastDot()
-    {
-        Dot prevDot = dotsInteracting[LastIndexOfDotsInteracting];
-        dotsInteracting.RemoveAt(LastIndexOfDotsInteracting);
-    }
-
-
-    private void DrawcursorChain(Dot hitDot)
+    private void DrawCursorChain(Dot hitDot)
     {
         if (cursorChain == null)
         {

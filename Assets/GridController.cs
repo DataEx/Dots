@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GridController : MonoBehaviour {
 
-    GridBox[,] grid;
+    private GridBox[,] grid;
 
     public static float GridBoxScale
     {
@@ -17,7 +17,6 @@ public class GridController : MonoBehaviour {
     private void Start()
     {
         grid = new GridBox[Globals.GridWidth, Globals.GridHeight];
-        // TODO: Check if prefab is null before continuing
         for (int i = 0; i < Globals.GridWidth; i++)
         {
             for (int j = 0; j < Globals.GridHeight; j++)
@@ -31,7 +30,7 @@ public class GridController : MonoBehaviour {
     {
         if (Globals.GridBoxPrefab == null)
         {
-            print("No valid GridBox Prefab");
+            Debug.LogError("No valid GridBox Prefab");
             return null;
         }
         GridBox gridBox = Instantiate(Globals.GridBoxPrefab);
@@ -82,7 +81,7 @@ public class GridController : MonoBehaviour {
             {
                 GridBox generatedGridBox = GenerateGridBox(new Coordinate(i, j));
                 // Position new gridboxes above the screen
-                generatedGridBox.transform.position = GridController.GetSpawnLocation(new Coordinate(i, j - dotsRemovedInColumn));
+                generatedGridBox.transform.position = GetSpawnLocation(new Coordinate(i, j - dotsRemovedInColumn));
                 generatedGridBox.FallDownFromAbove();
             }
 
@@ -103,7 +102,7 @@ public class GridController : MonoBehaviour {
         for (int j = coordinate.Y - 1; j >= 0; j--)
         {
             GridBox aboveGridBox = grid[coordinate.X, j];
-            if (aboveGridBox != null && aboveGridBox.GridDot != null && !aboveGridBox.isUpdatingCoordinate)
+            if (aboveGridBox != null && aboveGridBox.GridDot != null && !aboveGridBox.IsUpdatingCoordinate)
             {
                 return aboveGridBox;
             }
@@ -120,7 +119,7 @@ public class GridController : MonoBehaviour {
         }
         catch (IndexOutOfRangeException ex)
         {
-            print(string.Format("Cannot access grid coordinate ({0},{1})", c.X, c.Y));
+            Debug.LogError(string.Format("Cannot access grid coordinate ({0},{1})", c.X, c.Y));
         }
     }
 
