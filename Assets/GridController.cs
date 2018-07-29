@@ -71,7 +71,7 @@ public class GridController : MonoBehaviour {
                     dotsRemovedInColumn++;
                 }
                 else {
-                    // Animate any gridboxes above the destroyed one falling down the screen
+                    // Animate any gridboxes - above the destroyed one - falling down the screen
                     if (dotsRemovedInColumn > 0)
                         gridBox.FallDown(dotsRemovedInColumn);
                 }

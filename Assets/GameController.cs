@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour {
     // Collection of dots currently chained together
     List<Dot> dotsInteracting = new List<Dot>();
 
+    const int MIN_DOTS_NEEDED_TO_CHAIN = 2;
+
     Dot LastDotHit
     {
         get {
@@ -68,7 +70,7 @@ public class GameController : MonoBehaviour {
         // No longer interacting with screen
         else
         {
-            if (dotsInteracting.Count >= 2)
+            if (dotsInteracting.Count >= MIN_DOTS_NEEDED_TO_CHAIN)
             {
                 Globals.Grid.RemoveDots(dotsInteracting);
                 Globals.Grid.RepopulateGrid();
@@ -111,15 +113,14 @@ public class GameController : MonoBehaviour {
             // If already in set and not the PreviousChainHead, that means we've created a square-esque shape
             else if (dotsInteracting.Contains(hitDot))
             {
-                Cleanup();
                 List<Dot> dotsToDelete = Globals.Grid.GetAllDotsOfColor(MatchingColor);
                 Globals.Grid.RemoveDots(dotsToDelete);
                 Globals.Grid.RepopulateGrid();
+                Cleanup();
             }
-
+            // Add Chain
             else
             {
-                // Add Chain
                 Chain newChain = Instantiate(Globals.ChainPrefab);
                 newChain.Initialize(LastDotHit);
                 newChain.UpdateTransform(hitDot.transform.position);
