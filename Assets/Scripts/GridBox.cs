@@ -59,7 +59,7 @@ public class GridBox : MonoBehaviour {
 
     public void Initialize(Coordinate c, Vector3 spawnLocation)
     {
-        coordinate = c;
+        Coordinate = c;
         this.transform.position = spawnLocation;
         this.name = string.Format("Gridbox: ({0}, {1})", c.X, c.Y);
     }
@@ -85,8 +85,6 @@ public class GridBox : MonoBehaviour {
     // "Animation" for falling dots
     IEnumerator FallDownCoroutine(Vector3 destination)
     {
-        yield return null;
-
         Vector3 currentLocation = this.transform.position;
         while (currentLocation.y > destination.y)
         {

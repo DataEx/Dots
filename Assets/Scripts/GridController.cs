@@ -29,7 +29,6 @@ public class GridController : MonoBehaviour {
         GridBox gridBox = Instantiate(Globals.GridBoxPrefab);
         gridBox.Initialize(c, GetSpawnLocation(c));
         gridBox.transform.parent = this.transform;
-        grid[c.X, c.Y] = gridBox;
         return gridBox;
     }
 
@@ -51,7 +50,7 @@ public class GridController : MonoBehaviour {
         StartCoroutine(RepopulateGridCoroutine());
     }
 
-    // Destroy old gridboxes, replace them, and handle falling animation
+    // Destroy old gridboxes and replace them
     IEnumerator RepopulateGridCoroutine()
     {
         // Need to wait a frame for the dots to be registered as destroyed
@@ -134,7 +133,7 @@ public class GridController : MonoBehaviour {
                 GridBox gridBox = grid[i, j];
                 if (gridBox != null && gridBox.GridDot != null && gridBox.GridDot.Color == color)
                 {
-                    dotsOfColor.Add(grid[i, j].GridDot);
+                    dotsOfColor.Add(gridBox.GridDot);
                 }
             }
         }
