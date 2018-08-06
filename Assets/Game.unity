@@ -314,9 +314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7092bc759b79d744dbe1e3b3076438b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dotPrefab: {fileID: 114747301958236014, guid: 9dd6bba0d83e4184bb8cbbd675160614,
+  dotPrefab: {fileID: 114512795539100120, guid: 27ce65aa9e3903f42998f88e3082b9ce,
     type: 2}
-  chainPrefab: {fileID: 114579160800875274, guid: b4e9a4861daef5f48bf336798b4f9dc6,
+  chainPrefab: {fileID: 114214562338633764, guid: 5107154b9b2622345a59cb67fe6883fb,
     type: 2}
   gridBoxPrefab: {fileID: 114970461003174188, guid: 70f3d4d4946e205439d6b088d093edcd,
     type: 2}
@@ -327,9 +327,6 @@ MonoBehaviour:
   gridHeight: 5
   colors:
   - materialColor: {fileID: 2100000, guid: 948e042fc46101c4889a4eb4a5b26861, type: 2}
-  - materialColor: {fileID: 2100000, guid: 6c79024eead24b0438b78fa34586fa80, type: 2}
-  - materialColor: {fileID: 2100000, guid: 10d799b054aa5f74ab56a47fc66d4aec, type: 2}
-  - materialColor: {fileID: 2100000, guid: 3210298f25df3c84ca765c974397e1fe, type: 2}
 --- !u!1 &1706364595
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1706364596
 MeshRenderer:
   m_ObjectHideFlags: 0

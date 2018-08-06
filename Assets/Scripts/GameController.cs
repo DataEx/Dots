@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
@@ -49,6 +50,9 @@ public class GameController : MonoBehaviour {
 
     void Update ()
     {
+        if(Input.GetKeyDown(KeyCode.Q))
+            EditorApplication.isPaused = true;
+
 
         if (IsTouchingScreen())
         {
@@ -72,7 +76,17 @@ public class GameController : MonoBehaviour {
         {
             if (dotsInteracting.Count >= MIN_DOTS_NEEDED_TO_CHAIN)
             {
-                Globals.Grid.RemoveDots(dotsInteracting);
+                // If create square, remove all dots of that color
+                if (IsSquareCreated())
+                {
+                    List<Dot> dotsToDelete = Globals.Grid.GetAllDotsOfColor(MatchingColor);
+                    Globals.Grid.RemoveDots(dotsToDelete);
+                }
+                // Otherwise, remove the dots that have been selected
+                else
+                {
+                    Globals.Grid.RemoveDots(dotsInteracting);
+                }
                 Globals.Grid.RepopulateGrid();
             }
             Cleanup();
@@ -90,6 +104,7 @@ public class GameController : MonoBehaviour {
         return Camera.main.ScreenPointToRay(Input.mousePosition);
     }
 
+
     void TryAddDot(Dot hitDot)
     {
         // Don't interact with any dot that is currently moving
@@ -103,23 +118,13 @@ public class GameController : MonoBehaviour {
             MatchingColor = hitDot.Color;
             DrawCursorChain(hitDot);
         }
-        else if (hitDot.Color == MatchingColor && hitDot.Coordinate.IsNeighbor(LastDotHit.Coordinate))
+        else if (IsValidDot(hitDot))
         {
             // If same dot as previous hit, undo chain
             if (hitDot == PreviousChainHead)
             {
-                Chain chainToDelete = PreviousChainHead.Chain;
+                PreviousChainHead.RemoveChain(LastDotHit);
                 dotsInteracting.RemoveAt(LastIndexOfDotsInteracting);
-                chainToDelete.DestroyChain();
-            }
-
-            // If already in set and not the PreviousChainHead, that means we've created a square-esque shape
-            else if (dotsInteracting.Contains(hitDot))
-            {
-                List<Dot> dotsToDelete = Globals.Grid.GetAllDotsOfColor(MatchingColor);
-                Globals.Grid.RemoveDots(dotsToDelete);
-                Globals.Grid.RepopulateGrid();
-                Cleanup();
             }
             // Add Chain
             else
@@ -128,14 +133,23 @@ public class GameController : MonoBehaviour {
                 if (newChain != null)
                 {
                     newChain.Initialize(LastDotHit);
-                    newChain.UpdateTransform(hitDot.transform.position);
-                    LastDotHit.Chain = newChain;
+                    newChain.ConnectTo(hitDot);
+                    LastDotHit.AddChain(newChain);
                 }
 
                 dotsInteracting.Add(hitDot);
             }
             DrawCursorChain(hitDot);
         }
+    }
+
+    private bool IsValidDot(Dot hitDot)
+    {
+        return 
+            hitDot.Color == MatchingColor &&
+            hitDot.Coordinate.IsNeighbor(LastDotHit.Coordinate) && 
+            (hitDot == PreviousChainHead || !LastDotHit.IsConnectedTo(hitDot)) && 
+            LastDotHit.CanAddAnotherChain();
     }
 
     private void DrawCursorChain(Dot hitDot)
@@ -157,8 +171,24 @@ public class GameController : MonoBehaviour {
             Debug.LogError("No valid Chain Prefab");
             return null;
         }
+
     }
 
+
+    // Check is square is created by determining if the same Dot has been reached more than once
+    private bool IsSquareCreated()
+    {
+        HashSet<Dot> dotSet = new HashSet<Dot>();
+        foreach (Dot dot in dotsInteracting)
+        {
+            if (dotSet.Contains(dot))
+                return true;
+            else
+                dotSet.Add(dot);
+        }
+
+        return false;
+    }
 
     // Reseting state, to be run after a move has been made
     private void Cleanup()

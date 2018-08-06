@@ -62,6 +62,9 @@ public class GridBox : MonoBehaviour {
         Coordinate = c;
         this.transform.position = spawnLocation;
         this.name = string.Format("Gridbox: ({0}, {1})", c.X, c.Y);
+        if(gridDot != null)
+            gridDot.name = string.Format("Dot: ({0}, {1})", c.X, c.Y);
+
     }
 
     // Used when starting location is above the grid

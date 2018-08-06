@@ -3,6 +3,8 @@
 [RequireComponent(typeof(Renderer))]
 public class Dot : MonoBehaviour {
 
+    private const int MAX_CHAINS = 2;
+
     private GridBox gridBox;
     public GridBox GridBox
     {
@@ -43,32 +45,102 @@ public class Dot : MonoBehaviour {
         }
     }
 
-
     [SerializeField]
-    private Chain chain;
-    public Chain Chain
+    private Chain[] chains;
+    public Chain[] Chains
     {
         get
         {
-            return chain;
-        }
-        set
-        {
-            chain = value;
+            return chains;
         }
     }
+
 
     private Renderer rendererComponent;
 
     private void Awake()
     {
         rendererComponent = this.GetComponent<Renderer>();
+
+        chains = new Chain[MAX_CHAINS];
+    }
+
+    public void AddChain(Chain newChain)
+    {
+        for(int i = 0; i < chains.Length; i++)
+        {
+            if (chains[i] == null)
+            {
+                chains[i] = newChain;
+                return;
+            }
+        }
+    }
+
+    public bool CanAddAnotherChain()
+    {
+        int chainCount = 0;
+        for (int i = 0; i < chains.Length; i++)
+        {
+            if (chains[i] != null)
+            {
+                chainCount++;
+            }
+        }
+
+        return chainCount < MAX_CHAINS;
+    }
+
+    public void RemoveChain(Dot dot)
+    {
+        for (int i = 0; i < chains.Length; i++)
+        {
+            if (chains[i] != null && chains[i].IsConnectedTo(dot))
+            {
+                chains[i].DestroyChain();
+                return;
+            }
+        }
     }
 
     public void DestroyDot()
     {
-        if (Chain != null)
-            Chain.DestroyChain();
+        if (Chains != null)
+        {
+            foreach (Chain chain in chains)
+            {
+                if(chain != null)
+                    chain.DestroyChain();
+            }
+        }
         Destroy(this.gameObject);
+    }
+
+    public bool IsConnectedTo(Dot dot)
+    {
+        // Check if this dot's chains have a connection to the other dot
+        for (int i = 0; i < chains.Length; i++)
+        {
+            Chain chain = Chains[i];
+            if (chain == null)
+                continue;
+            if (chain.IsConnectedTo(dot))
+                return true;
+        }
+
+
+        // Check if other dot's chains have a connection to the this dot
+        for (int i = 0; i < dot.Chains.Length; i++)
+        {
+            Chain chain = dot.Chains[i];
+            if (chain == null)
+                continue;
+            if (chain.IsConnectedTo(this))
+                return true;
+        }
+
+        return false;
+
+
     }
 }
