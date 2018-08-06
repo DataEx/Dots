@@ -105,6 +105,9 @@ public class Globals : MonoBehaviour {
         }
     }
 
+    public const float SMALL_NUMBER = 0.0001f;
+
+
     [SerializeField] [Tooltip("The different colors that will be used when generated dots")]
     private DotColor[] colors;
     public static DotColor[] Colors

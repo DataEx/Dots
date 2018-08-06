@@ -15,11 +15,15 @@ public class Chain : MonoBehaviour {
 
     private PooledObject pooledObject;
 
+    // The distance between the sprite's edges divided by its transform's size 
+    private const float SPRITE_SIZE_RATIO = 0.8333f;
+
     private void Awake()
     {
         pooledObject = GetComponent<PooledObject>();
         pooledObject.Pool = Globals.ChainObjectPool;
     }
+
 
     public void Initialize(Dot dot)
     {
@@ -54,7 +58,7 @@ public class Chain : MonoBehaviour {
         // A minor adjustment is needed to correct this.
         if (endPoint.x == originDot.transform.position.x)
         {
-            this.transform.position += Vector3.right * 0.0001f;
+            this.transform.position += Vector3.right * Globals.SMALL_NUMBER;
         }
 
         // Orient self appropriately
@@ -66,7 +70,8 @@ public class Chain : MonoBehaviour {
         // Scale chain between two objs (z-component only)
         float objDistance = Vector3.Distance(originDot.transform.position, endPoint);
         Vector3 chainScale = this.transform.localScale;
-        chainScale.z = objDistance;
+        chainScale.z = objDistance * SPRITE_SIZE_RATIO;
+
         this.transform.localScale = chainScale;
     }
 

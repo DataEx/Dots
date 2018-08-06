@@ -371,6 +371,8 @@ MonoBehaviour:
   gridHeight: 5
   colors:
   - materialColor: {fileID: 2100000, guid: 948e042fc46101c4889a4eb4a5b26861, type: 2}
+  - materialColor: {fileID: 2100000, guid: 6c79024eead24b0438b78fa34586fa80, type: 2}
+  - materialColor: {fileID: 2100000, guid: 3210298f25df3c84ca765c974397e1fe, type: 2}
   - materialColor: {fileID: 2100000, guid: 10d799b054aa5f74ab56a47fc66d4aec, type: 2}
 --- !u!1 &1706364595
 GameObject:
@@ -388,7 +390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &1706364596
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -48,10 +48,6 @@ public class GameController : MonoBehaviour {
 
     void Update ()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
-            EditorApplication.isPaused = true;
-
-
         if (IsTouchingScreen())
         {
             RaycastHit hit;
