@@ -26,7 +26,18 @@ public class GridController : MonoBehaviour {
             Debug.LogError("No valid GridBox Prefab");
             return null;
         }
-        GridBox gridBox = Instantiate(Globals.GridBoxPrefab);
+
+        GridBox gridBox;
+        PooledObject gridBoxObject = Globals.GridBoxObjectPool.GetObject();
+        if (gridBoxObject != null)
+        {
+            gridBox = gridBoxObject.GetComponent<GridBox>();
+        }
+        else
+        {
+            gridBox = Instantiate(Globals.GridBoxPrefab);
+        }
+
         gridBox.Initialize(c, GetSpawnLocation(c));
         gridBox.transform.parent = this.transform;
         return gridBox;
@@ -63,10 +74,10 @@ public class GridController : MonoBehaviour {
             {
                 GridBox gridBox = grid[i, j];
                 // Destroy old gridboxes
-                if (gridBox != null && gridBox.GridDot == null)
+                if (gridBox != null && gridBox.GridDot != null && gridBox.GridDot.SetForDestruction)
                 {
+                    gridBox.DestroyGridBox();
                     grid[i, j] = null;
-                    Destroy(gridBox.gameObject);
                     dotsRemovedInColumn++;
                 }
                 else {

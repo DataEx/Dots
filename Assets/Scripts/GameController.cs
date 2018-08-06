@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -162,10 +160,20 @@ public class GameController : MonoBehaviour {
     }
 
 
-    Chain CreateChain()
+    private Chain CreateChain()
     {
         if (Globals.ChainPrefab != null)
-            return Instantiate(Globals.ChainPrefab);
+        {
+            PooledObject chainObject = Globals.ChainObjectPool.GetObject();
+            if (chainObject != null)
+            {
+                return chainObject.GetComponent<Chain>();
+            }
+            else
+            {
+                return Instantiate(Globals.ChainPrefab);
+            }
+        }
         else
         {
             Debug.LogError("No valid Chain Prefab");
@@ -197,6 +205,7 @@ public class GameController : MonoBehaviour {
         if (cursorChain != null)
         {
             cursorChain.DestroyChain();
+            cursorChain = null;
         }
     }
 

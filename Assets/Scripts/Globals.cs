@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Globals : MonoBehaviour {
 
@@ -33,6 +31,27 @@ public class Globals : MonoBehaviour {
         get
         {
             return instance.gridBoxPrefab;
+        }
+    }
+
+
+    [SerializeField]
+    private ObjectPool chainObjectPool;
+    public static ObjectPool ChainObjectPool
+    {
+        get
+        {
+            return instance.chainObjectPool;
+        }
+    }
+
+    [SerializeField]
+    private ObjectPool gridBoxObjectPool;
+    public static ObjectPool GridBoxObjectPool
+    {
+        get
+        {
+            return instance.gridBoxObjectPool;
         }
     }
 

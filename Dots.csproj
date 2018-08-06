@@ -92,6 +92,8 @@
     <Compile Include="Assets\Scripts\Globals.cs" />
     <Compile Include="Assets\Scripts\GridBox.cs" />
     <Compile Include="Assets\Scripts\GridController.cs" />
+    <Compile Include="Assets\Scripts\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\PooledObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

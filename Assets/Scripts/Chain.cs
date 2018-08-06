@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(PooledObject))]
 public class Chain : MonoBehaviour {
 
     // Dot where the chain is originating from
@@ -13,6 +12,14 @@ public class Chain : MonoBehaviour {
 
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+
+    private PooledObject pooledObject;
+
+    private void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+        pooledObject.Pool = Globals.ChainObjectPool;
+    }
 
     public void Initialize(Dot dot)
     {
@@ -71,6 +78,6 @@ public class Chain : MonoBehaviour {
 
     public void DestroyChain()
     {
-        Destroy(this.gameObject);
+        pooledObject.ReturnToPool();
     }
 }

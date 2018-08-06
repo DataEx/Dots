@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PooledObject))]
 public class GridBox : MonoBehaviour {
 
     [SerializeField]
@@ -37,9 +38,17 @@ public class GridBox : MonoBehaviour {
         }
     }
 
-    void Awake()
+    private PooledObject pooledObject;
+
+    void OnEnable()
     {
         CreateDot();
+        if (pooledObject == null)
+        {
+            pooledObject = GetComponent<PooledObject>();
+            pooledObject.Pool = Globals.GridBoxObjectPool;
+        }
+
     }
 
     public void CreateDot()
@@ -50,11 +59,16 @@ public class GridBox : MonoBehaviour {
             return;
         }
 
-        gridDot = Instantiate(Globals.DotPrefab);
-        gridDot.transform.parent = this.transform;
-        gridDot.transform.localPosition = Vector3.zero;
+        if (gridDot == null)
+        {
+            gridDot = Instantiate(Globals.DotPrefab);
+            gridDot.transform.parent = this.transform;
+            gridDot.transform.localPosition = Vector3.zero;
+            gridDot.GridBox = this;
+        }
+
+        gridDot.SetForDestruction = false;
         gridDot.Color = Globals.GetRandomColor();
-        gridDot.GridBox = this;
     }
 
     public void Initialize(Coordinate c, Vector3 spawnLocation)
@@ -97,5 +111,10 @@ public class GridBox : MonoBehaviour {
         }
         this.transform.position = destination;
         isUpdatingCoordinate = false;
+    }
+
+    public void DestroyGridBox()
+    {
+        pooledObject.ReturnToPool();
     }
 }

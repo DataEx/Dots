@@ -55,6 +55,20 @@ public class Dot : MonoBehaviour {
         }
     }
 
+    private bool setForDestruction = false;
+    public bool SetForDestruction
+    {
+        get
+        {
+            return setForDestruction;
+        }
+        set
+        {
+            setForDestruction = value;
+        }
+    }
+
+
 
     private Renderer rendererComponent;
 
@@ -98,6 +112,7 @@ public class Dot : MonoBehaviour {
             if (chains[i] != null && chains[i].IsConnectedTo(dot))
             {
                 chains[i].DestroyChain();
+                chains[i] = null;
                 return;
             }
         }
@@ -107,13 +122,16 @@ public class Dot : MonoBehaviour {
     {
         if (Chains != null)
         {
-            foreach (Chain chain in chains)
+            for(int i = 0; i < chains.Length; i++)
             {
-                if(chain != null)
-                    chain.DestroyChain();
+                if (chains[i] != null)
+                {
+                    chains[i].DestroyChain();
+                    chains[i] = null;
+                }
             }
         }
-        Destroy(this.gameObject);
+        setForDestruction = true;
     }
 
     public bool IsConnectedTo(Dot dot)
